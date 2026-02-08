@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Консультації викладачів</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Реєстрація та облік консультацій викладачів</h1>
+    <nav>
+      <a href="/">Головна</a>
+      <a href="/#history">Історія</a>
+      <a href="/#stats">Статистика</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="consultations">
+      <h2>Доступні консультації</h2>
+      <div id="consultation-list"></div>
+      <p id="consultation-empty" class="hidden">Немає запланованих консультацій.</p>
+    </section>
+
+    <section id="register-section" class="hidden">
+      <h2>Реєстрація на консультацію</h2>
+      <p id="register-consultation-info"></p>
+      <form id="register-form">
+        <label>Ваше ім'я: <input type="text" id="student-name" required placeholder="Іван Петренко"></label>
+        <button type="submit">Зареєструватися</button>
+      </form>
+      <p id="register-message" class="message hidden"></p>
+    </section>
+
+    <section id="registrations-section" class="hidden">
+      <h3>Зареєстровані студенти</h3>
+      <ul id="registrations-list"></ul>
+    </section>
+
+    <section id="history">
+      <h2>Історія консультацій</h2>
+      <form id="history-filters">
+        <label>Дата: <input type="date" id="filter-date"></label>
+        <label>Статус:
+          <select id="filter-status">
+            <option value="">— всі —</option>
+            <option value="scheduled">Заплановано</option>
+            <option value="confirmed">Підтверджено</option>
+            <option value="cancelled">Скасовано</option>
+          </select>
+        </label>
+        <label>Студент: <input type="text" id="filter-student" placeholder="ім'я студента"></label>
+        <label>Викладач: <input type="text" id="filter-teacher" placeholder="ім'я викладача"></label>
+        <button type="submit">Застосувати</button>
+      </form>
+      <div id="history-list"></div>
+    </section>
+
+    <section id="stats">
+      <h2>Статистика</h2>
+      <div class="stats-grid">
+        <div>
+          <h3>За тиждень</h3>
+          <pre id="stats-week"></pre>
+        </div>
+        <div>
+          <h3>За місяць</h3>
+          <pre id="stats-month"></pre>
+        </div>
+        <div>
+          <h3>Найпопулярніші викладачі (реєстрації)</h3>
+          <pre id="stats-teachers"></pre>
+        </div>
+        <div>
+          <h3>Найчастіші теми</h3>
+          <pre id="stats-topics"></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
