@@ -1,25 +1,29 @@
 <!doctype html>
-<html>
+<html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Student Dashboard</title>
-  <link rel="stylesheet" href="/styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Кабінет студента</title>
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-<main class="container">
-  <h1>Student Dashboard</h1>
+  <main class="dashboard-page">
+    <div class="dashboard-header">
+    <div class="user-info" id="me"></div>
 
-  <div style="display:flex; gap:10px; align-items:center;">
-    <span id="me"></span>
-    <button id="logout" type="button">Logout</button>
-  </div>
+    <div class="dashboard-actions">
+        <a class="btn btn-secondary" href="/">На головну</a>
+        <button id="logout" class="btn btn-muted" type="button">Вийти</button>
+    </div>
+    </div>
 
-  <h2 style="margin-top:20px;">My consultations</h2>
-  <div id="mine-empty" class="hidden">No registrations yet.</div>
-  <div id="mine-list"></div>
+    <section class="dashboard-section">
+      <h2>Мої консультації</h2>
+      <div id="mine-empty" class="hidden">Поки що немає записів.</div>
+      <div id="mine-list"></div>
+    </section>
+  </main>
 
-  <p style="margin-top:20px;"><a href="/">Back to home</a></p>
-</main>
-<script src="/js/student.js"></script>
+  <script src="/js/student.js"></script>
 </body>
 </html>

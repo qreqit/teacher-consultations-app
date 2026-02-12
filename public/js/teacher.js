@@ -77,7 +77,7 @@ async function loadMine() {
             <span class="topic">${c.topic}</span>
             <div class="meta">${c.teacher_name} · ${c.date} ${c.time || ""} · slots: ${c.max_slots ?? "—"}</div>
         </div>
-        <button type="button" data-id="${c.id}">View registrations</button>
+        <button type="button" data-id="${c.id}">Переглянути записи</button>
     `;
     const btn = div.querySelector("button");
     btn.addEventListener("click", async () => {

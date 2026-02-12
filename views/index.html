@@ -7,21 +7,30 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <header>
+<header class="main-header">
+  <div class="header-top">
     <h1>Реєстрація та облік консультацій викладачів</h1>
-    <div id="auth-bar" style="display:flex;gap:10px;align-items:center;margin:10px 0;">
-      <span id="auth-user">Guest</span>
-      <a id="auth-login" href="/login">Login</a>
-      <a id="auth-register" href="/register">Register</a>
-      <a id="auth-dashboard" class="hidden" href="#">Dashboard</a>
-      <button id="auth-logout" class="hidden" type="button">Logout</button>
+
+    <div id="auth-bar" class="auth-bar">
+      <span id="auth-user" class="auth-user">Гість</span>
+
+      <a id="auth-login" href="/login" class="auth-link">Увійти</a>
+      <a id="auth-register" href="/register" class="auth-link">Зареєструватися</a>
+
+      <a id="auth-dashboard" class="auth-link hidden" href="#">Особистий кабінет</a>
+
+      <button id="auth-logout" class="auth-button hidden" type="button">
+        Вийти
+      </button>
     </div>
-    <nav>
-      <a href="/">Головна</a>
-      <a href="/#history">Історія</a>
-      <a href="/#stats">Статистика</a>
-    </nav>
-  </header>
+  </div>
+
+  <nav class="main-nav">
+    <a href="/">Головна</a>
+    <a href="/#history">Історія</a>
+    <a href="/#stats">Статистика</a>
+  </nav>
+</header>
 
   <main>
     <section id="consultations">
