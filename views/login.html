@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Login</h1>
+
+    <form id="login-form">
+      <label>Email</label>
+      <input id="email" type="email" required />
+
+      <label>Password</label>
+      <input id="password" type="password" required />
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p id="msg" class="message hidden"></p>
+
+    <p>Don’t have an account? <a href="/register">Register</a></p>
+    <p><a href="/">Back to home</a></p>
+  </main>
+
+  <script src="/js/login.js"></script>
+</body>
+</html>
