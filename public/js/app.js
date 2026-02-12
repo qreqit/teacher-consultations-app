@@ -1,4 +1,15 @@
 const API = "/api";
+let currentUser = null;
+
+async function initAuth() {
+  try {
+    const res = await fetch(API + "/auth/me");
+    const data = await res.json();
+    currentUser = data.user || null;
+  } catch {
+    currentUser = null;
+  }
+}
 
 function showMessage(elId, text, isError) {
   const el = document.getElementById(elId);
@@ -35,7 +46,17 @@ async function loadConsultations() {
         </div>
         <button type="button" data-id="${c.id}">Записатися</button>
       `;
-      card.querySelector("button").addEventListener("click", () => openRegister(c));
+      card.querySelector("button").addEventListener("click", () => {
+        if (!currentUser) {
+          window.location.href = "/login";
+          return;
+        }
+        if (currentUser.role !== "student") {
+          alert("Запис доступний лише для студентів");
+          return;
+        }
+        openRegister(c);
+      });
       list.appendChild(card);
     });
   } catch (e) {
@@ -173,6 +194,43 @@ async function loadStats() {
   }
 }
 
-loadConsultations();
+async function getMe() {
+  const res = await fetch("/api/auth/me");
+  const data = await res.json().catch(() => ({}));
+  return data.user || null;
+}
+
+async function logout() {
+  await fetch("/api/auth/logout", { method: "POST" });
+  window.location.reload();
+}
+
+function setAuthBar(user) {
+  const userEl = document.getElementById("auth-user");
+  const loginEl = document.getElementById("auth-login");
+  const registerEl = document.getElementById("auth-register");
+  const logoutEl = document.getElementById("auth-logout");
+
+  if (!user) {
+    if (userEl) userEl.textContent = "Guest";
+    if (loginEl) loginEl.classList.remove("hidden");
+    if (registerEl) registerEl.classList.remove("hidden");
+    if (logoutEl) logoutEl.classList.add("hidden");
+    return;
+  }
+
+  if (userEl) userEl.textContent = `${user.name} (${user.role})`;
+  if (loginEl) loginEl.classList.add("hidden");
+  if (registerEl) registerEl.classList.add("hidden");
+  if (logoutEl) {
+    logoutEl.classList.remove("hidden");
+    logoutEl.onclick = logout;
+  }
+}
+
+(async () => {
+  await initAuth();
+  await loadConsultations();
+})();
 loadHistory();
 loadStats();
