@@ -6,6 +6,7 @@ const requireRole = require("../middleware/requireRole");
 
 router.get("/", controller.getAll);
 router.get("/history", controller.history);
+router.get("/mine", requireAuth, controller.mine);
 router.get("/:id", controller.getById);
 router.get("/:id/registrations", controller.getRegistrations);
 router.post("/", requireRole("teacher"), controller.create);

@@ -123,3 +123,39 @@ exports.getRegistrations = (req, res) => {
     }
   );
 };
+
+exports.mine = (req, res) => {
+  const user = req.session.user;
+
+  if (user.role === "teacher") {
+    db.all(
+      "SELECT * FROM consultations WHERE teacher_name = ? ORDER BY date DESC, time DESC",
+      [user.name],
+      (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows || []);
+      }
+    );
+    return;
+  }
+
+  if (user.role === "student") {
+    db.all(
+      `
+      SELECT c.*
+      FROM consultations c
+      JOIN registrations r ON r.consultation_id = c.id
+      WHERE r.student_name = ?
+      ORDER BY c.date DESC, c.time DESC
+      `,
+      [user.name],
+      (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows || []);
+      }
+    );
+    return;
+  }
+
+  res.json([]);
+};
