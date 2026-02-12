@@ -3,6 +3,8 @@ const path = require("path");
 const session = require("express-session");
 
 const app = express();
+const requireAuth = require("./middleware/requireAuth");
+const requireRole = require("./middleware/requireRole");
 app.use(express.json());
 
 app.use(
@@ -33,6 +35,14 @@ app.get("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
   res.sendFile(path.join(viewsPath, "register.html"));
+});
+
+app.get("/student", requireRole("student"), (req, res) => {
+  res.sendFile(path.join(viewsPath, "student.html"));
+});
+
+app.get("/teacher", requireRole("teacher"), (req, res) => {
+  res.sendFile(path.join(viewsPath, "teacher.html"));
 });
 
 const consultationRoutes = require("./routes/consultationRoutes");
