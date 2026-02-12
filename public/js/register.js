@@ -15,6 +15,17 @@ function showMsg(text, isError) {
   el.classList.remove("hidden");
 }
 
+(async () => {
+  try {
+    const res = await fetch("/api/auth/me");
+    const data = await res.json();
+    const user = data.user || null;
+    if (user) {
+      window.location.href = user.role === "teacher" ? "/teacher" : "/student";
+    }
+  } catch {}
+})();
+
 document.getElementById("register-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 

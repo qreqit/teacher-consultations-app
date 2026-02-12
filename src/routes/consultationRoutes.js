@@ -8,7 +8,7 @@ router.get("/", controller.getAll);
 router.get("/history", controller.history);
 router.get("/mine", requireAuth, controller.mine);
 router.get("/:id", controller.getById);
-router.get("/:id/registrations", controller.getRegistrations);
+router.get("/:id/registrations", requireRole("teacher"), controller.getRegistrations);
 router.post("/", requireRole("teacher"), controller.create);
 router.post("/:id/register", requireRole("student"), controller.register);
 

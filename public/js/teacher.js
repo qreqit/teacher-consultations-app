@@ -22,6 +22,39 @@ function showMsg(text, isError) {
   el.classList.remove("hidden");
 }
 
+async function loadRegistrations(consultationId) {
+  const list = document.getElementById("regs-list");
+  const empty = document.getElementById("regs-empty");
+  list.innerHTML = "";
+
+  const res = await fetch(`/api/consultations/${consultationId}/registrations`);
+  const data = await res.json().catch(() => []);
+
+  if (!res.ok) {
+    showMsg(data.error || "Failed to load registrations", true);
+    empty.classList.remove("hidden");
+    return;
+  }
+
+  if (!Array.isArray(data) || data.length === 0) {
+    empty.classList.remove("hidden");
+    return;
+  }
+  empty.classList.add("hidden");
+
+  data.forEach((r) => {
+    const div = document.createElement("div");
+    div.className = "consultation-card";
+    div.innerHTML = `
+      <div class="info">
+        <span class="topic">${r.student_name}</span>
+        <div class="meta">registration id: ${r.id}</div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
 async function loadMine() {
   const list = document.getElementById("mine-list");
   const empty = document.getElementById("mine-empty");
@@ -40,11 +73,16 @@ async function loadMine() {
     const div = document.createElement("div");
     div.className = "consultation-card";
     div.innerHTML = `
-      <div class="info">
-        <span class="topic">${c.topic}</span>
-        <div class="meta">${c.teacher_name} · ${c.date} ${c.time || ""} · slots: ${c.max_slots ?? "—"}</div>
-      </div>
+        <div class="info">
+            <span class="topic">${c.topic}</span>
+            <div class="meta">${c.teacher_name} · ${c.date} ${c.time || ""} · slots: ${c.max_slots ?? "—"}</div>
+        </div>
+        <button type="button" data-id="${c.id}">View registrations</button>
     `;
+    const btn = div.querySelector("button");
+    btn.addEventListener("click", async () => {
+        await loadRegistrations(c.id);
+    });
     list.appendChild(div);
   });
 }

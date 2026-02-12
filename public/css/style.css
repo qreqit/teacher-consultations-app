@@ -181,3 +181,4 @@ form button:hover {
 
 .history-item .topic { font-weight: 600; }
 .history-item .meta { color: #555; font-size: 0.9rem; }
+.hidden { display: none; }

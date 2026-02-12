@@ -11,6 +11,40 @@ async function initAuth() {
   }
 }
 
+async function doLogout() {
+  await fetch(API + "/auth/logout", { method: "POST" });
+  window.location.reload();
+}
+
+function renderAuthBar() {
+  const userEl = document.getElementById("auth-user");
+  const loginEl = document.getElementById("auth-login");
+  const registerEl = document.getElementById("auth-register");
+  const dashEl = document.getElementById("auth-dashboard");
+  const logoutEl = document.getElementById("auth-logout");
+
+  if (!userEl || !loginEl || !registerEl || !dashEl || !logoutEl) return;
+
+  if (!currentUser) {
+    userEl.textContent = "Guest";
+    loginEl.classList.remove("hidden");
+    registerEl.classList.remove("hidden");
+    dashEl.classList.add("hidden");
+    logoutEl.classList.add("hidden");
+    return;
+  }
+
+  userEl.textContent = `${currentUser.name} (${currentUser.role})`;
+  loginEl.classList.add("hidden");
+  registerEl.classList.add("hidden");
+
+  dashEl.classList.remove("hidden");
+  dashEl.href = currentUser.role === "teacher" ? "/teacher" : "/student";
+
+  logoutEl.classList.remove("hidden");
+  logoutEl.onclick = doLogout;
+}
+
 function showMessage(elId, text, isError) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -39,14 +73,16 @@ async function loadConsultations() {
     data.forEach((c) => {
       const card = document.createElement("div");
       card.className = "consultation-card";
+      const canRegister = currentUser && currentUser.role === "student";
       card.innerHTML = `
         <div class="info">
           <span class="topic">${escapeHtml(c.topic)}</span>
           <div class="meta">${escapeHtml(c.teacher_name)} · ${c.date} ${c.time || ""} · місць: ${c.max_slots ?? "—"}</div>
         </div>
-        <button type="button" data-id="${c.id}">Записатися</button>
+        ${canRegister ? `<button type="button" data-id="${c.id}">Записатися</button>` : ``}
       `;
-      card.querySelector("button").addEventListener("click", () => {
+        const btn = card.querySelector("button");
+        if (btn) btn.addEventListener("click", () => {
         if (!currentUser) {
           window.location.href = "/login";
           return;
@@ -230,6 +266,7 @@ function setAuthBar(user) {
 
 (async () => {
   await initAuth();
+  renderAuthBar();
   await loadConsultations();
 })();
 loadHistory();
