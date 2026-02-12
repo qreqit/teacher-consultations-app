@@ -2,16 +2,43 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Teacher Dashboard</title>
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <main class="container">
     <h1>Teacher Dashboard</h1>
-    <p>Welcome!</p>
 
-    <button id="logout">Logout</button>
-    <p><a href="/">Back to home</a></p>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <span id="me"></span>
+      <button id="logout" type="button">Logout</button>
+    </div>
+
+    <h2 style="margin-top:20px;">Create consultation</h2>
+    <form id="create-form">
+      <label>Topic</label>
+      <input id="topic" type="text" required />
+
+      <label>Date</label>
+      <input id="date" type="date" required />
+
+      <label>Time</label>
+      <input id="time" type="time" required />
+
+      <label>Max slots</label>
+      <input id="max_slots" type="number" min="1" value="10" required />
+
+      <button type="submit">Create</button>
+    </form>
+
+    <p id="msg" class="message hidden"></p>
+
+    <h2 style="margin-top:20px;">My consultations</h2>
+    <div id="mine-empty" class="hidden">No consultations yet.</div>
+    <div id="mine-list"></div>
+
+    <p style="margin-top:20px;"><a href="/">Back to home</a></p>
   </main>
 
   <script src="/js/teacher.js"></script>
