@@ -5,6 +5,7 @@ const session = require("express-session");
 const app = express();
 const requireAuth = require("./middleware/requireAuth");
 const requireRole = require("./middleware/requireRole");
+const requireRolePage = require("./middleware/requireRolePage")
 app.use(express.json());
 
 app.use(
@@ -37,11 +38,11 @@ app.get("/register", (req, res) => {
   res.sendFile(path.join(viewsPath, "register.html"));
 });
 
-app.get("/student", requireRole("student"), (req, res) => {
+app.get("/student", requireRolePage("student"), (req, res) => {
   res.sendFile(path.join(viewsPath, "student.html"));
 });
 
-app.get("/teacher", requireRole("teacher"), (req, res) => {
+app.get("/teacher", requireRolePage("teacher"), (req, res) => {
   res.sendFile(path.join(viewsPath, "teacher.html"));
 });
 
