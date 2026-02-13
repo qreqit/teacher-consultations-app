@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Кабінет викладача</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <main class="dashboard-page">
+    <div class="dashboard-header">
+    <div class="user-info" id="me"></div>
+
+    <div class="dashboard-actions">
+        <a class="btn btn-secondary" href="/">На головну</a>
+        <button id="logout" class="btn btn-muted" type="button">Вийти</button>
+    </div>
+    </div>
+
+    <section class="dashboard-section">
+      <h2>Створити консультацію</h2>
+
+      <form id="create-form">
+        <label for="topic">Тема</label>
+        <input id="topic" type="text" required />
+
+        <label for="date">Дата</label>
+        <input id="date" type="date" required />
+
+        <label for="time">Час</label>
+        <input id="time" type="time" required />
+
+        <label for="max_slots">Кількість місць</label>
+        <input id="max_slots" type="number" min="1" value="10" required />
+
+        <button type="submit">Створити</button>
+      </form>
+
+      <p id="msg" class="message hidden"></p>
+    </section>
+
+    <section class="dashboard-section">
+      <h2>Мої консультації</h2>
+      <div id="mine-empty" class="hidden">Поки що немає консультацій.</div>
+      <div id="mine-list"></div>
+    </section>
+
+    <section class="dashboard-section">
+      <h2>Записи студентів</h2>
+      <div id="regs-empty" class="hidden">Немає записів.</div>
+      <div id="regs-list"></div>
+    </section>
+  </main>
+
+  <script src="/js/teacher.js"></script>
+</body>
+</html>

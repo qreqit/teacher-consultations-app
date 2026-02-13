@@ -21,14 +21,20 @@ exports.getById = (req, res) => {
 };
 
 exports.create = (req, res) => {
-  const { teacher_name, topic, date, time, status, max_slots } = req.body;
+  const { topic, date, time, status, max_slots } = req.body;
+  const teacher_name = req.session.user.name;
+
   const st = status || "scheduled";
   const slots = max_slots != null ? max_slots : 10;
+
+  if (!teacher_name || !teacher_name.trim()) {
+    return res.status(400).json({ error: "User name is missing" });
+  }
 
   db.run(
     `INSERT INTO consultations (teacher_name, topic, date, time, status, max_slots)
      VALUES (?,?,?,?,?,?)`,
-    [teacher_name, topic, date, time, st, slots],
+    [teacher_name.trim(), topic, date, time, st, slots],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
       res.status(201).json({ id: this.lastID });
@@ -38,7 +44,7 @@ exports.create = (req, res) => {
 
 exports.register = (req, res) => {
   const consultationId = req.params.id || req.body.consultationId;
-  const studentName = req.body.studentName || req.body.student_name;
+  const studentName = req.session.user.name;
 
   if (!studentName || !studentName.trim()) {
     return res.status(400).json({ error: "Student name is required" });
@@ -116,4 +122,40 @@ exports.getRegistrations = (req, res) => {
       res.json(rows || []);
     }
   );
+};
+
+exports.mine = (req, res) => {
+  const user = req.session.user;
+
+  if (user.role === "teacher") {
+    db.all(
+      "SELECT * FROM consultations WHERE teacher_name = ? ORDER BY date DESC, time DESC",
+      [user.name],
+      (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows || []);
+      }
+    );
+    return;
+  }
+
+  if (user.role === "student") {
+    db.all(
+      `
+      SELECT c.*
+      FROM consultations c
+      JOIN registrations r ON r.consultation_id = c.id
+      WHERE r.student_name = ?
+      ORDER BY c.date DESC, c.time DESC
+      `,
+      [user.name],
+      (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows || []);
+      }
+    );
+    return;
+  }
+
+  res.json([]);
 };
