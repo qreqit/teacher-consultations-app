@@ -262,10 +262,16 @@ form button:hover {
 }
 
 #registrations-list li {
-  padding: 0.5rem 0.25rem;
+  padding: 0.55rem 0.5rem;
   border-bottom: 1px solid #f1f5f9;
   font-size: 0.93rem;
   color: #334155;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+#registrations-list li:hover {
+  background: #f8fafc;
 }
 
 #registrations-list li:last-child {
@@ -274,10 +280,16 @@ form button:hover {
 
 /* ── History items ── */
 .history-item {
-  padding: 0.65rem 0;
+  padding: 0.65rem 0.5rem;
   border-bottom: 1px solid #f1f5f9;
   font-size: 0.93rem;
   line-height: 1.5;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.history-item:hover {
+  background: #f8fafc;
 }
 
 .history-item:last-child {
@@ -306,8 +318,16 @@ form button:hover {
 }
 
 /* ── Header ── */
+@keyframes headerShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .main-header {
-  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 40%, #1e3a5f 100%);
+  background-size: 200% 200%;
+  animation: headerShift 8s ease infinite;
   color: #fff;
   padding: 1.5rem 1.75rem;
   border-radius: 14px;
@@ -622,4 +642,123 @@ form button:hover {
 ::selection {
   background: #bfdbfe;
   color: #1e293b;
+}
+
+/* ── Smooth appearance ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+main section,
+.dashboard-section,
+.auth-card {
+  animation: fadeInUp 0.35s ease both;
+}
+
+main section:nth-child(2) { animation-delay: 0.06s; }
+main section:nth-child(3) { animation-delay: 0.12s; }
+main section:nth-child(4) { animation-delay: 0.18s; }
+
+/* ── Custom scrollbar (Webkit) ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ── Empty state ── */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+/* ── Status badge colours ── */
+.history-item em[data-status="confirmed"] {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.history-item em[data-status="cancelled"] {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.history-item em[data-status="scheduled"] {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+/* ── Nav horizontal scroll on very small screens ── */
+@media (max-width: 480px) {
+  .main-nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 1.25rem;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .main-nav a {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+/* ── Print styles ── */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .main-header,
+  .dashboard-header,
+  .auth-bar,
+  .dashboard-actions,
+  button,
+  .main-nav {
+    display: none !important;
+  }
+
+  main section,
+  .dashboard-section {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+    animation: none;
+  }
+
+  .consultation-card {
+    box-shadow: none;
+    border-left-color: #333;
+  }
 }
